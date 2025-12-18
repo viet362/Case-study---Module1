@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    td{
+        width: 40px;
+        height: 40px;
+        text-align: center;
+        border: 1px solid;
+    }
+</style>
+<body>
+    <form>
+    <fieldset>
+        <legend><b>Caro Game</b></legend>
+        <span> Columns: </span>
+        <input id="columnInput" name="keyword" type="text" placeholder="Enter column" value="20">
+        <span> Rows: </span>
+        <input id="rowInput" name="keyword" type="text" placeholder="Enter row" value="20">
+        <button type="button" onclick="startGame()">Start/Reset Game</button>
+    </fieldset>
+    </form>
+    <br>
+   <table id="board" border="1"></table>
+
+<script>
+class GameBoard {
+    constructor(width, height) {
+        this.width = width;
+        this.height = height;
+        this.board = [];
+        this.currentPlayer = "X";
+        this.createBoard();
+    }
+
+    createBoard() {
+        for (let i = 0; i < this.width; i++) {
+            this.board[i] = [];
+            for (let j = 0; j < this.height; j++) {
+                this.board[i][j] = "";
+            }
+        }
+        this.displayBoard();
+    }
+
+    displayBoard() {
+        let str = "";
+        for (let i = 0; i < this.width; i++) {
+            str += "<tr>";
+            for (let j = 0; j < this.height; j++) {
+
+                let color = "";
+                if (this.board[i][j] === "X") color = "#3498db";
+                if (this.board[i][j] === "O") color = "#e74c3c";
+
+                str += `
+                    <td onclick="game.handleClick(${i}, ${j})"
+                        style="width:25px;height:25px;
+                               text-align:center;
+                               cursor:pointer;
+                               font-weight:bold;
+                               color:${color}">
+                        ${this.board[i][j]}
+                    </td>`;
+            }
+            str += "</tr>";
+        }
+        document.getElementById("board").innerHTML = str;
+    }
+
+    handleClick(i, j) {
+        if (this.board[i][j] !== "") return;
+
+        this.board[i][j] = this.currentPlayer;
+
+        if (this.currentPlayer === "X") {
+            this.currentPlayer = "O";
+        } else {
+            this.currentPlayer = "X";
+        }
+
+        for (let i=0; i<this.width; i++){
+                for (let j=0; j<this.width; j++){
+                    if (this.board[i][j] == "") continue;
+                    if (
+                        ((this.board[i][j]==this.board[i+1][j])&&(this.board[i][j]==this.board[i+2][j])&&(this.board[i][j]==this.board[i+3][j])&&(this.board[i][j]==this.board[i+4][j])) ||
+                        ((this.board[i][j]==this.board[i][j+1])&&(this.board[i][j]==this.board[i][j+2])&&(this.board[i][j]==this.board[i][j+3])&&(this.board[i][j]==this.board[i][j+4])) ||
+                        ((this.board[i][j]==this.board[i+1][j+1])&&(this.board[i][j]==this.board[i+2][j+2])&&(this.board[i][j]==this.board[i+3][j+3])&&(this.board[i][j]==this.board[i+4][j+4])) ||
+                        ((this.board[i][j]==this.board[i-1][j+1])&&(this.board[i][j]==this.board[i-2][j+2])&&(this.board[i][j]==this.board[i-3][j+3])&&(this.board[i][j]==this.board[i-4][j+4]))
+                    ) {alert("You win!");}
+                }
+            }
+
+        this.displayBoard();
+    }
+}
+
+function startGame() {
+    let columns = parseInt(document.getElementById("columnInput").value);
+    let rows = parseInt(document.getElementById("rowInput").value);
+    game = new GameBoard(columns, rows);
+}
+</script>
+</body>
+</html>
