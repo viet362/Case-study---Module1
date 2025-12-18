@@ -3,29 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Caro Game</title> 
 </head>
-<style>
-    td{
-        width: 40px;
-        height: 40px;
-        text-align: center;
-        border: 1px solid;
-    }
-</style>
+<link rel="stylesheet" href="caro_style.css">
 <body>
-    <form>
-    <fieldset>
-        <legend><b>Caro Game</b></legend>
+    <fieldset class = "form-group1">
+        <legend><b>🎮 Caro Game</b></legend>
         <span> Columns: </span>
-        <input id="columnInput" name="keyword" type="text" placeholder="Enter column" value="20">
+        <input id="columnInput" name="keyword" type="number" placeholder="Enter column" value="20">
         <span> Rows: </span>
-        <input id="rowInput" name="keyword" type="text" placeholder="Enter row" value="20">
-        <button type="button" onclick="startGame()">Start/Reset Game</button>
+        <input id="rowInput" name="keyword" type="number" placeholder="Enter row" value="20">
+        <br>
+        <button type="button" class="start" onclick="startGame()">🆕 Start/Reset Game</button>
+        <button type="button" class="score" onclick="removeScore()">🔢 Remove Score</button>
     </fieldset>
-    </form>
     <br>
-   <table id="board" border="1"></table>
+
+    <div class="game-area">
+        <div class = "form-group2">
+            <p>Your player turn</p>
+            <p id="playerTurnInfo">X</p>
+        </div>
+        <div class="score-board">
+            <h3 style="color: #00dbde; margin-bottom: 15px; text-align: center;">SCORE</h3>
+            <div class="score-row score-x">
+                <div>
+                    <div style="color: #00dbde; font-size: 14px;">NGƯỜI CHƠI X</div>
+                    <div class="score-value" id="scoreX">0</div>
+                </div>
+                    <div style="color: #00dbde; font-size: 32px;">✖</div>
+            </div>
+                    
+            <div class="score-row score-o">
+                <div>
+                    <div style="color: #f5576c; font-size: 14px;">NGƯỜI CHƠI O</div>
+                    <div class="score-value" id="scoreO">0</div>
+                </div>
+                <div style="color: #f5576c; font-size: 32px;">⭕</div>
+            </div>
+        </div>
+        <div class = "form-group3">
+            <p>Click to empty cell to play!</p>
+            <div id="board"></div>                
+            <p id="result"></p>
+        </div>
+    </div>
 
 <script>
 class GameBoard {
@@ -35,6 +57,7 @@ class GameBoard {
         this.board = [];
         this.currentPlayer = "X";
         this.createBoard();
+        this.gameOver = false;
     }
 
     createBoard() {
@@ -48,16 +71,16 @@ class GameBoard {
     }
 
     displayBoard() {
-        let str = "";
+        let table = '<table border="1">';
         for (let i = 0; i < this.width; i++) {
-            str += "<tr>";
+            table += "<tr>";
             for (let j = 0; j < this.height; j++) {
 
                 let color = "";
                 if (this.board[i][j] === "X") color = "#3498db";
                 if (this.board[i][j] === "O") color = "#e74c3c";
 
-                str += `
+                table += `
                     <td onclick="game.handleClick(${i}, ${j})"
                         style="width:25px;height:25px;
                                text-align:center;
@@ -67,34 +90,48 @@ class GameBoard {
                         ${this.board[i][j]}
                     </td>`;
             }
-            str += "</tr>";
+            table += "</tr>";
         }
-        document.getElementById("board").innerHTML = str;
+        table += "</table>";
+        document.getElementById("board").innerHTML = table;
     }
 
     handleClick(i, j) {
+        if (this.gameOver) return;
         if (this.board[i][j] !== "") return;
 
         this.board[i][j] = this.currentPlayer;
 
-        if (this.currentPlayer === "X") {
-            this.currentPlayer = "O";
-        } else {
-            this.currentPlayer = "X";
-        }
-
         for (let i=0; i<this.width; i++){
-                for (let j=0; j<this.width; j++){
+                for (let j=0; j<this.height; j++){
                     if (this.board[i][j] == "") continue;
                     if (
                         ((this.board[i][j]==this.board[i+1][j])&&(this.board[i][j]==this.board[i+2][j])&&(this.board[i][j]==this.board[i+3][j])&&(this.board[i][j]==this.board[i+4][j])) ||
                         ((this.board[i][j]==this.board[i][j+1])&&(this.board[i][j]==this.board[i][j+2])&&(this.board[i][j]==this.board[i][j+3])&&(this.board[i][j]==this.board[i][j+4])) ||
                         ((this.board[i][j]==this.board[i+1][j+1])&&(this.board[i][j]==this.board[i+2][j+2])&&(this.board[i][j]==this.board[i+3][j+3])&&(this.board[i][j]==this.board[i+4][j+4])) ||
                         ((this.board[i][j]==this.board[i-1][j+1])&&(this.board[i][j]==this.board[i-2][j+2])&&(this.board[i][j]==this.board[i-3][j+3])&&(this.board[i][j]==this.board[i-4][j+4]))
-                    ) {alert("You win!");}
+                    ) {
+                        this.displayBoard();
+                        document.getElementById("result").innerText = this.currentPlayer + " win! 🎉";
+                        this.gameOver = true;
+                        if (this.currentPlayer === "X") {
+                            let scoreX = parseInt(document.getElementById("scoreX").innerText);
+                            document.getElementById("scoreX").innerText = scoreX + 1;
+                        } else {
+                            let scoreO = parseInt(document.getElementById("scoreO").innerText);
+                            document.getElementById("scoreO").innerText = scoreO + 1;
+                        }
+                        return;
+                    }
                 }
             }
 
+        if (this.currentPlayer === "X") {
+            this.currentPlayer = "O";
+        } else {
+            this.currentPlayer = "X";
+        }
+        document.getElementById('playerTurnInfo').textContent = this.currentPlayer;
         this.displayBoard();
     }
 }
@@ -104,6 +141,8 @@ function startGame() {
     let rows = parseInt(document.getElementById("rowInput").value);
     game = new GameBoard(columns, rows);
 }
+
+startGame();
 </script>
 </body>
 </html>
