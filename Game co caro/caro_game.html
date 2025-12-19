@@ -7,45 +7,52 @@
 </head>
 <link rel="stylesheet" href="caro_style.css">
 <body>
-    <fieldset class = "form-group1">
-        <legend><b>🎮 Caro Game</b></legend>
-        <span> Columns: </span>
-        <input id="columnInput" name="keyword" type="number" placeholder="Enter column" value="20">
-        <span> Rows: </span>
-        <input id="rowInput" name="keyword" type="number" placeholder="Enter row" value="20">
-        <br>
-        <button type="button" class="start" onclick="startGame()">🆕 Start/Reset Game</button>
-        <button type="button" class="score" onclick="removeScore()">🔢 Remove Score</button>
-    </fieldset>
-    <br>
-
     <div class="game-area">
-        <div class = "form-group2">
-            <p>Your player turn</p>
-            <p id="playerTurnInfo">X</p>
-        </div>
-        <div class="score-board">
-            <h3 style="color: #00dbde; margin-bottom: 15px; text-align: center;">SCORE</h3>
-            <div class="score-row score-x">
-                <div>
-                    <div style="color: #00dbde; font-size: 14px;">NGƯỜI CHƠI X</div>
-                    <div class="score-value" id="scoreX">0</div>
-                </div>
-                    <div style="color: #00dbde; font-size: 32px;">✖</div>
+        <div class = "dispplay_status">
+            <fieldset class = "form-group1">
+                <legend><b>🎮 Caro Game</b></legend>
+                <!-- <p> Columns: 
+                <input id="columnInput" name="keyword" type="number" placeholder="Enter column" value="20">
+                 Rows: 
+                <input id="rowInput" name="keyword" type="number" placeholder="Enter row" value="20"> -->
+                <p class="selectSize">Select size:
+                    <select id="select_option">
+                        <option value="10x10">10x10 ▓</option>
+                        <option value="15x15">15x15 ▓</option>
+                        <option value="20x20" selected>20x20 ▓</option>
+                    </select>
+                </p>
+                <p><button type="button" class="start" onclick="startGame()">🆕 Start/Reset Game</button></p>
+                <p><button type="button" class="score" onclick="removeScore()">🔢 Remove Score</button></p>
+            </fieldset>
+
+            <div class = "form-group2">
+                <div style="color: #eab4dd; font-size: 25px;"><b>Player turn</b></div>
+                <div id="playerTurnInfo">X</div>
             </div>
-                    
-            <div class="score-row score-o">
-                <div>
-                    <div style="color: #f5576c; font-size: 14px;">NGƯỜI CHƠI O</div>
-                    <div class="score-value" id="scoreO">0</div>
+            <div class="score-board">
+                <h3 style="color: #eab4dd; margin-bottom: 15px; text-align: center;">SCORE</h3>
+                <div class="score-x">
+                    <div>
+                        <div style="color: #00dbde; font-size: 14px;">Player X</div>
+                        <div class="score-value" id="scoreX">0</div>
+                    </div>
+                        <div style="color: #00dbde; font-size: 42px;">✖</div>
                 </div>
-                <div style="color: #f5576c; font-size: 32px;">⭕</div>
+                        
+                <div class="score-o">
+                    <div>
+                        <div style="color: #f5576c; font-size: 14px;">Player O</div>
+                        <div class="score-value" id="scoreO">0</div>
+                    </div>
+                    <div style="color: #f5576c; font-size: 32px;">⭕</div>
+                </div>
             </div>
         </div>
         <div class = "form-group3">
-            <p>Click to empty cell to play!</p>
+            <p id="status" style ="text-align: center; font-size: 25px; color: #eab4dd;">Click to empty cell to play!</p>
             <div id="board"></div>                
-            <p id="result"></p>
+            <!-- <p id="result" style ="text-align: center;"></p> -->
         </div>
     </div>
 
@@ -83,9 +90,9 @@ class GameBoard {
                 table += `
                     <td onclick="game.handleClick(${i}, ${j})"
                         style="width:25px;height:25px;
-                               text-align:center;
                                cursor:pointer;
                                font-weight:bold;
+                               border:1px solid ${color};
                                color:${color}">
                         ${this.board[i][j]}
                     </td>`;
@@ -112,8 +119,9 @@ class GameBoard {
                         ((this.board[i][j]==this.board[i-1][j+1])&&(this.board[i][j]==this.board[i-2][j+2])&&(this.board[i][j]==this.board[i-3][j+3])&&(this.board[i][j]==this.board[i-4][j+4]))
                     ) {
                         this.displayBoard();
-                        document.getElementById("result").innerText = this.currentPlayer + " win! 🎉";
+                        // document.getElementById("result").innerText = this.currentPlayer + " win! 🎉";
                         this.gameOver = true;
+                        document.getElementById("status").innerHTML = '<button class="win" onclick="startGame()">Congratulations ' + this.currentPlayer + ' win! 🎉. Start new game!</button>';
                         if (this.currentPlayer === "X") {
                             let scoreX = parseInt(document.getElementById("scoreX").innerText);
                             document.getElementById("scoreX").innerText = scoreX + 1;
@@ -128,8 +136,12 @@ class GameBoard {
 
         if (this.currentPlayer === "X") {
             this.currentPlayer = "O";
+            document.getElementById("playerTurnInfo").style.color = "#f5576c";
+            document.getElementById("playerTurnInfo").style.textShadow = "0 0 10px #f5576c, 0 0 20px #f5576c, 0 0 30px #f5576c";
         } else {
             this.currentPlayer = "X";
+            document.getElementById("playerTurnInfo").style.color = "#00dbde";
+            document.getElementById("playerTurnInfo").style.textShadow = "0 0 10px #00dbde, 0 0 20px #00dbde, 0 0 30px #00dbde";
         }
         document.getElementById('playerTurnInfo').textContent = this.currentPlayer;
         this.displayBoard();
@@ -137,9 +149,23 @@ class GameBoard {
 }
 
 function startGame() {
-    let columns = parseInt(document.getElementById("columnInput").value);
-    let rows = parseInt(document.getElementById("rowInput").value);
-    game = new GameBoard(columns, rows);
+    // let columns = parseInt(document.getElementById("columnInput").value);
+    // let rows = parseInt(document.getElementById("rowInput").value);
+    let select_option = document.getElementById("select_option").value;
+    let size;
+    if (select_option === "10x10") {
+        size = 10;
+    } else if (select_option === "15x15") {
+        size = 15;
+    } else if (select_option === "20x20") {
+        size = 20;
+    }
+    game = new GameBoard(size, size);
+}
+
+function removeScore() {
+    document.getElementById("scoreX").innerText = "0";
+    document.getElementById("scoreO").innerText = "0";
 }
 
 startGame();
