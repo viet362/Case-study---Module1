@@ -17,9 +17,9 @@
                 <input id="rowInput" name="keyword" type="number" placeholder="Enter row" value="20"> -->
                 <p class="selectSize">Select size:
                     <select id="select_option">
-                        <option value="10x10">10x10 ▓</option>
-                        <option value="15x15">15x15 ▓</option>
-                        <option value="20x20" selected>20x20 ▓</option>
+                        <option value="10">10x10 ▓</option>
+                        <option value="15">15x15 ▓</option>
+                        <option value="20" selected>20x20 ▓</option>
                     </select>
                 </p>
                 <p><button type="button" class="start" onclick="startGame()">🆕 Start/Reset Game</button></p>
@@ -65,6 +65,7 @@ class GameBoard {
         this.currentPlayer = "X";
         this.createBoard();
         this.gameOver = false;
+        this.winCells = [];
     }
 
     createBoard() {
@@ -108,32 +109,28 @@ class GameBoard {
         if (this.board[i][j] !== "") return;
 
         this.board[i][j] = this.currentPlayer;
-
-        for (let i=0; i<this.width; i++){
-                for (let j=0; j<this.height; j++){
-                    if (this.board[i][j] == "") continue;
-                    if (
-                        ((this.board[i][j]==this.board[i+1][j])&&(this.board[i][j]==this.board[i+2][j])&&(this.board[i][j]==this.board[i+3][j])&&(this.board[i][j]==this.board[i+4][j])) ||
-                        ((this.board[i][j]==this.board[i][j+1])&&(this.board[i][j]==this.board[i][j+2])&&(this.board[i][j]==this.board[i][j+3])&&(this.board[i][j]==this.board[i][j+4])) ||
-                        ((this.board[i][j]==this.board[i+1][j+1])&&(this.board[i][j]==this.board[i+2][j+2])&&(this.board[i][j]==this.board[i+3][j+3])&&(this.board[i][j]==this.board[i+4][j+4])) ||
-                        ((this.board[i][j]==this.board[i-1][j+1])&&(this.board[i][j]==this.board[i-2][j+2])&&(this.board[i][j]==this.board[i-3][j+3])&&(this.board[i][j]==this.board[i-4][j+4]))
-                    ) {
-                        this.displayBoard();
-                        // document.getElementById("result").innerText = this.currentPlayer + " win! 🎉";
-                        this.gameOver = true;
-                        document.getElementById("status").innerHTML = '<button class="win" onclick="startGame()">Congratulations ' + this.currentPlayer + ' win! 🎉. Start new game!</button>';
-                        if (this.currentPlayer === "X") {
-                            let scoreX = parseInt(document.getElementById("scoreX").innerText);
-                            document.getElementById("scoreX").innerText = scoreX + 1;
-                        } else {
-                            let scoreO = parseInt(document.getElementById("scoreO").innerText);
-                            document.getElementById("scoreO").innerText = scoreO + 1;
-                        }
-                        return;
-                    }
-                }
+        if (this.checkWin(i, j)) {
+            this.displayBoard();
+            this.winCells.forEach(cell => {
+                let cellElement = document.querySelector(`#board table tr:nth-child(${cell[0] + 1}) td:nth-child(${cell[1] + 1})`);
+                cellElement.style.backgroundColor = "rgba(255, 255, 0, 0.463)";
+            });
+            // document.getElementById("result").innerText = this.currentPlayer + " win! 🎉";
+            this.gameOver = true;
+            document.getElementById("status").innerHTML = '<button class="win" onclick="startGame()">Congratulations ' + this.currentPlayer + ' win! 🎉. Start new game!</button>';
+            if (this.currentPlayer === "X") {
+                let scoreX = parseInt(document.getElementById("scoreX").innerText);
+                document.getElementById("scoreX").innerText = scoreX + 1;
+            } else {
+                let scoreO = parseInt(document.getElementById("scoreO").innerText);
+                document.getElementById("scoreO").innerText = scoreO + 1;
             }
+            return;
+        }
+        this.switchPlayer();
+    }
 
+    switchPlayer() {
         if (this.currentPlayer === "X") {
             this.currentPlayer = "O";
             document.getElementById("playerTurnInfo").style.color = "#f5576c";
@@ -146,20 +143,88 @@ class GameBoard {
         document.getElementById('playerTurnInfo').textContent = this.currentPlayer;
         this.displayBoard();
     }
+
+    checkWin(i, j) {
+        let mark = 0;
+        this.winCells = [[i, j]];
+
+        // hàng ngang
+        // kiểm tra sang trái
+        mark = i - 1;
+        while (mark >= 0 && this.board[mark][j] === this.currentPlayer) {
+            this.winCells.push([mark, j]);
+            mark--;
+        }
+
+        // kiểm tra sang phải
+        mark = i + 1;
+        while (mark < this.width && this.board[mark][j] === this.currentPlayer) {
+            this.winCells.push([mark, j]);
+            mark++;
+        }
+
+        // nếu đủ 5 ô liên tiếp
+        if (this.winCells.length >= 5) {return true;}return false;
+
+        //hàng dọc
+        this.winCells = [[i, j]];
+        // kiểm tra lên trên
+        mark = j - 1;
+        while (mark >= 0 && this.board[i][mark] === this.currentPlayer) {
+            this.winCells.push([i, mark]);
+            mark--;
+        }
+
+        // kiểm tra xuống dưới
+        mark = j + 1;
+        while (mark < this.height && this.board[i][mark] === this.currentPlayer) {
+            this.winCells.push([i, mark]);
+            mark++;
+        }
+
+        if (this.winCells.length >= 5) {return true;}return false;
+
+        //chéo \
+        this.winCells = [[i, j]];
+        // kiểm tra lên trên bên trái
+        mark = 1;
+        while (i - mark >= 0 && j - mark >= 0 && this.board[i - mark][j - mark] === this.currentPlayer) {
+            this.winCells.push([i - mark, j - mark]);
+            mark++;
+        }
+        // kiểm tra xuống dưới bên phải
+        mark = 1;
+        while (i + mark < this.width && j + mark < this.height && this.board[i + mark][j + mark] === this.currentPlayer) {
+            this.winCells.push([i + mark, j + mark]);
+            mark++;
+        }
+        if (this.winCells.length >= 5) {return true;}return false;
+        //chéo /
+        this.winCells = [[i, j]];
+        // kiểm tra lên trên bên phải
+        mark = 1;
+        while (i + mark < this.width && j - mark >= 0 && this.board[i + mark][j - mark] === this.currentPlayer) {
+            this.winCells.push([i + mark, j - mark]);
+            mark++;
+        }
+        // kiểm tra xuống dưới bên trái
+        mark = 1;
+        while (i - mark >= 0 && j + mark < this.height && this.board[i - mark][j + mark] === this.currentPlayer) {
+            this.winCells.push([i - mark, j + mark]);
+            mark++;
+        }
+        if (this.winCells.length >= 5) {return true;}return false;
+
+    }
+
 }
 
 function startGame() {
     // let columns = parseInt(document.getElementById("columnInput").value);
     // let rows = parseInt(document.getElementById("rowInput").value);
-    let select_option = document.getElementById("select_option").value;
-    let size;
-    if (select_option === "10x10") {
-        size = 10;
-    } else if (select_option === "15x15") {
-        size = 15;
-    } else if (select_option === "20x20") {
-        size = 20;
-    }
+    document.getElementById("status").innerText = 'Click to empty cell to play!';
+    document.getElementById("playerTurnInfo").innerHTML = `<div style="color: #00dbde; text-shadow: 0 0 10px #00dbde, 0 0 20px #00dbde, 0 0 30px #00dbde;">X</div>`;
+    let size = document.getElementById("select_option").value;
     game = new GameBoard(size, size);
 }
 

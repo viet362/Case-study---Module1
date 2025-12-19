@@ -120,7 +120,7 @@ fieldset{
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
 }
 legend{
-    font-size: 50px;
+    font-size: 40px;
     background: linear-gradient(90deg, #00dbde, #fc00ff);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
