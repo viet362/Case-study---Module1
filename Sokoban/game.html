@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sokoban</title>
+</head>
+<body>
+    <canvas id = "myCanvas" width="500" height="500" style="border: 1px solid #000000;"></canvas>
+    <script src="class.js"></script>
+    <script>
+        let canvas = document.getElementById('myCanvas');
+        let anim1 = new Player(canvas,'Images/character.png',4,4);
+        let x = 0;
+        let y = 0;
+        // Handle key events
+        document.addEventListener('keydown', (e) => {
+            switch(e.key){
+                case 'ArrowUp':
+                    y -= size;
+                    anim1.setDirection('up');
+                    break;
+                case 'ArrowDown':
+                    y += size;
+                    anim1.setDirection('down');
+                    break;
+                case 'ArrowLeft':
+                    x -= size;
+                    anim1.setDirection('left');
+                    break;
+                case 'ArrowRight':
+                    x += size;
+                    anim1.setDirection('right');
+                    break;
+            }
+
+            anim1.setPostion(x, y);
+            anim1.updateFrame();
+            anim1.drawImage();
+        });
+
+    </script>
+</body>
+</html>
