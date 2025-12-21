@@ -161,6 +161,13 @@ button.win:hover {
     transform: translateY(-2px);
     box-shadow: 0 10px 25px rgba(56, 249, 215, 0.5);
 }
+button.draw {
+    background: linear-gradient(135deg, #a3d030 0%, #083667 100%);
+} 
+button.draw:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(8, 54, 103, 0.5);
+}
 
 table{
     margin-top: 20px;

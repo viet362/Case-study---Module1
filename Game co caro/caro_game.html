@@ -65,6 +65,7 @@ class GameBoard {
         this.currentPlayer = "X";
         this.createBoard();
         this.gameOver = false;
+        this.gameDraw = false;
         this.winCells = [];
     }
 
@@ -109,6 +110,13 @@ class GameBoard {
         if (this.board[i][j] !== "") return;
 
         this.board[i][j] = this.currentPlayer;
+
+        if (this.checkDraw()) {
+            this.displayBoard();
+            this.gameOver = true;
+            document.getElementById("status").innerHTML = '<button class="draw" onclick="startGame()">Game draw! 🤝. Start new game!</button>';
+            return;
+        }
         if (this.checkWin(i, j)) {
             this.displayBoard();
             this.winCells.forEach(cell => {
@@ -164,7 +172,7 @@ class GameBoard {
         }
 
         // nếu đủ 5 ô liên tiếp
-        if (this.winCells.length >= 5) {return true;}return false;
+        if (this.winCells.length >= 5) {return true;};
 
         //hàng dọc
         this.winCells = [[i, j]];
@@ -182,7 +190,7 @@ class GameBoard {
             mark++;
         }
 
-        if (this.winCells.length >= 5) {return true;}return false;
+        if (this.winCells.length >= 5) {return true;};
 
         //chéo \
         this.winCells = [[i, j]];
@@ -198,7 +206,8 @@ class GameBoard {
             this.winCells.push([i + mark, j + mark]);
             mark++;
         }
-        if (this.winCells.length >= 5) {return true;}return false;
+        if (this.winCells.length >= 5) {return true;};
+
         //chéo /
         this.winCells = [[i, j]];
         // kiểm tra lên trên bên phải
@@ -213,8 +222,19 @@ class GameBoard {
             this.winCells.push([i - mark, j + mark]);
             mark++;
         }
-        if (this.winCells.length >= 5) {return true;}return false;
+        if (this.winCells.length >= 5) {return true;};
 
+    }
+
+    checkDraw() {
+        for (let i = 0; i < this.width; i++) {
+            for (let j = 0; j < this.height; j++) {
+                if (this.board[i][j] === "") {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
 }
