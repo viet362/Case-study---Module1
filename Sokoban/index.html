@@ -5,10 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sokoban</title>
 </head>
+<link rel="stylesheet" href="interface.css">
 <body>
-    <center><canvas id = "myCanvas"></canvas></center>
-    <script src="map.js"></script>
+    <div id="game-container">
+        <h1>📦Sokoban Game📦</h1>
+        <div>
+            <button id="undo-btn" onclick="undoMove()">Undo</button>
+            <button id="reset-btn">Reset Level</button>
+            <button id="next-btn">Next Level</button>
+            <button id="choose-level-btn">Choose Level</button>
+            <button id="random-level-btn">Random Level</button>
+        </div>
+        <div>
+            <button id="up-btn">↑</button>
+            <button id="left-btn">←</button>
+            <button id="down-btn">↓</button>
+            <button id="right-btn">→</button>
+        </div>
+        <b><p id="level-info">Level: 0</p></b>
+        <center><canvas id = "myCanvas"></canvas></center>
+    </div>
+    <script src="map_level.js"></script>
     <script src="class_objects.js"></script>
     <script src="game.js"></script>
+
+    <script>
+
+    </script>
 </body>
 </html>

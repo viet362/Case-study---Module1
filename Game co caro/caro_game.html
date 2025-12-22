@@ -111,12 +111,6 @@ class GameBoard {
 
         this.board[i][j] = this.currentPlayer;
 
-        if (this.checkDraw()) {
-            this.displayBoard();
-            this.gameOver = true;
-            document.getElementById("status").innerHTML = '<button class="draw" onclick="startGame()">Game draw! 🤝. Start new game!</button>';
-            return;
-        }
         if (this.checkWin(i, j)) {
             this.displayBoard();
             this.winCells.forEach(cell => {
@@ -135,6 +129,14 @@ class GameBoard {
             }
             return;
         }
+
+        if (this.checkDraw()) {
+            this.displayBoard();
+            this.gameOver = true;
+            document.getElementById("status").innerHTML = '<button class="draw" onclick="startGame()">Game draw! 🤝. Start new game!</button>';
+            return;
+        }
+        
         this.switchPlayer();
     }
 

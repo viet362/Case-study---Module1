@@ -3,6 +3,10 @@
 // Author: Archanfel
 //#: wall ; @ player ; $ box ; . target ; + player on target ; * box on target ; ' ' empty space
 
+let size = 30;
+let rawData = 
+`
+Level 0
 ########
 #    ###
 #@ $ ###
@@ -11,7 +15,7 @@
 #### ###
 ####.###
 ########
-Title: This is Sparta!
+Level 1
 
  ###########
 ##    .    ##
@@ -26,7 +30,7 @@ Title: This is Sparta!
 #  $ $.$ $  #
 ##    .    ##
  ###########
-Title: A Bit Harder Than Aenigma 2
+Level 2
 
      #####
     ##   #
@@ -42,7 +46,7 @@ Title: A Bit Harder Than Aenigma 2
  #               #
  ##  ##########  #
   ####        ####
-Title: A Bit Harder Than Aenigma 3
+Level 3
 
      #####
     ##   ##
@@ -57,7 +61,7 @@ Title: A Bit Harder Than Aenigma 3
   ### $ $ ###
     ##   ##
      #####
-Title: A Bit Harder Than Aenigma 4
+Level 4
 
       #########
   #####       #####
@@ -74,7 +78,7 @@ Title: A Bit Harder Than Aenigma 4
   #      ...      #
   #####       #####
       #########
-Title: A Bit Harder Than Aenigma 10
+Level 5
 
 ####
 #  #       #####
@@ -94,7 +98,7 @@ Title: A Bit Harder Than Aenigma 10
 #  #     #### #
 ####       #  #
            ####
-Title: A Bit Harder Than Aenigma 8
+Level 6
 
      ######
    ####   #
@@ -108,7 +112,7 @@ Title: A Bit Harder Than Aenigma 8
 # ###  ####
 #     ##
 #######
-Title: A Bit Harder Than Aenigma 13
+Level 7
 
            ####
            #  #
@@ -124,7 +128,7 @@ Title: A Bit Harder Than Aenigma 13
            #  #
            #  #
            ####
-Title: A Bit Harder Than Aenigma 14
+Level 8
 
           #####
     #######...#
@@ -141,7 +145,7 @@ Title: A Bit Harder Than Aenigma 14
 #...   @  #
 #...#######
 #####
-Title: A Bit Harder Than Aenigma 16
+Level 9
 
     #######
     #   #@##
@@ -157,7 +161,7 @@ Title: A Bit Harder Than Aenigma 16
  # # ######
  #   #
  #####
-Title: A Bit Harder Than Aenigma 17
+Level 10
 
 ####################
 #+.... #   #   #   #
@@ -179,7 +183,7 @@ Title: A Bit Harder Than Aenigma 17
  #### # ##
     #   #
     #####
-Title: A Bit Harder Than Aenigma 18
+Level 11
 
        #######
        #     #
@@ -200,7 +204,7 @@ Title: A Bit Harder Than Aenigma 18
     #   $ $ $   #
     #####   #####
         #####
-Title: A Bit Harder Than Aenigma 19
+Level 12
 
 ######
 #    ###
@@ -217,7 +221,7 @@ Title: A Bit Harder Than Aenigma 19
    #   ## #
    ###    #
      ######
-Title: A Bit Harder Than Aenigma 20
+Level 13
 
       #####
       #   #
@@ -234,7 +238,7 @@ Title: A Bit Harder Than Aenigma 20
       #   ##
       #   #
       #####
-Title: A Bit Harder Than Aenigma 25
+Level 14
 
   ####     ####
   #  #######  #
@@ -253,7 +257,7 @@ Title: A Bit Harder Than Aenigma 25
 ###     @     ###
   #  #######  #
   ####     ####
-Title: A Bit Harder Than Aenigma 27
+Level 15
 
   #########
   #       ###
@@ -274,7 +278,7 @@ Title: A Bit Harder Than Aenigma 27
 #   $$$$$ #
 ###       #
   #########
-Title: A Bit Harder Than Aenigma 29
+Level 16
 
          #####
          #   #
@@ -291,7 +295,7 @@ Title: A Bit Harder Than Aenigma 29
 # $ $ $ #        ...#
 #       #   ###  ...#
 ############# #######
-Title: A Bit Harder Than Aenigma 35
+Level 17
 
 ##############
 #...      ...#
@@ -307,7 +311,7 @@ Title: A Bit Harder Than Aenigma 35
 #.# ## $##$#.#
 #...      ...#
 ##############
-Title: A Bit Harder Than Aenigma 34
+Level 18
 
     ###########
     #         #
@@ -326,7 +330,7 @@ Title: A Bit Harder Than Aenigma 34
     #         #
     #         #
     ###########
-Title: A Bit Harder Than Aenigma 31
+Level 19
 
        #####
    ##### @ #####
@@ -344,7 +348,7 @@ Title: A Bit Harder Than Aenigma 31
    # $ $   $ $ #
    #   #   #   #
    #############
-Title: A Bit Harder Than Aenigma 33
+Level 20
 
      ###########
      #         #
@@ -363,7 +367,7 @@ Title: A Bit Harder Than Aenigma 33
 # #### # #####
 #        #
 ##########
-Title: A Bit Harder Than Aenigma 30
+Level 21
 
 #####                  #####
 #   ##                ##   #
@@ -383,7 +387,7 @@ Title: A Bit Harder Than Aenigma 30
 # $  ##              ##  $ #
 #   ##                ##   #
 #####                  #####
-Title: A Bit Harder Than Aenigma 39
+Level 22
 
       #######
      ##     ##
@@ -404,7 +408,7 @@ Title: A Bit Harder Than Aenigma 39
      #  $ $  #
      ##     ##
       #######
-Title: A Bit Harder Than Aenigma 40
+Level 23
 
   #####
   #   ########
@@ -419,7 +423,7 @@ Title: A Bit Harder Than Aenigma 40
      #...# $ $ $$#$##
      #####          #
          ############
-Title: A Bit Harder Than MacTommy 5
+Level 24
 
 ##########   ##########
 #  #...  #####  ...#  #
@@ -438,7 +442,7 @@ Title: A Bit Harder Than MacTommy 5
 #  $ $ $ ## ## $ $ $  #
 #        #####        #
 ##########   ##########
-Title: A Bit Harder Than MacTommy 9
+Level 25
 
     #####
 #####   #######
@@ -452,7 +456,7 @@ Title: A Bit Harder Than MacTommy 9
 #...... $   $ #
 #......########
 ########
-Title: A Bit Harder Than MacTommy 3
+Level 26
 
    ########
    #   #  #
@@ -471,7 +475,7 @@ Title: A Bit Harder Than MacTommy 3
 ##      $     #  #
 # @#####  #####  #
 ####   ####   ####
-Title: A Bit Harder Than MacTommy 15
+Level 27
 
    ##########
    #    #   #
@@ -489,7 +493,7 @@ Title: A Bit Harder Than MacTommy 15
  ###    #.......#
    ######.......#
         #########
-Title: A Bit Harder Than MacTommy 17
+Level 28
 
 ###################
 #.................#
@@ -509,7 +513,7 @@ Title: A Bit Harder Than MacTommy 17
 # $$  ######### #.#
 #               #.#
 ###################
-Title: A Bit Harder Than MacTommy 10
+Level 29
 
    #####   #####
   ##   #####   ##
@@ -524,7 +528,7 @@ Title: A Bit Harder Than MacTommy 10
  ##     ###  ###  #
   #  #### #### ####
   ####
-Title: A Bit Harder Than MacTommy 36
+Level 30
 
     ###################
 #####@       ##    #  #
@@ -543,7 +547,7 @@ Title: A Bit Harder Than MacTommy 36
   #   $   $ $  $  #
   #####       #####
       #########
-Title: A Bit Harder Than MacTommy 16
+Level 31
 
 ####################
 #                  #
@@ -560,7 +564,7 @@ Title: A Bit Harder Than MacTommy 16
 #   #..........    #
 #    ..........    #
 ####################
-Title: A Bit Harder Than MacTommy 44
+Level 32
 
 ###############
 #             #
@@ -577,7 +581,7 @@ Title: A Bit Harder Than MacTommy 44
 #.....   .... #
 #...... ..... #
 ###############
-Title: A Bit Harder Than Kurt Nittel 1-88
+Level 33
 
      ####
  #####  #
@@ -597,7 +601,7 @@ Title: A Bit Harder Than Kurt Nittel 1-88
    #       #  #
    #########  #
            ####
-Title: Haplogroup W
+Level 34
 
             #####
         #####   ##
@@ -623,7 +627,7 @@ Title: Haplogroup W
    ##  ####  #
     ##      ##
      ########
-Title: It's A Trap!
+Level 35
 
 ###################
 #                 #
@@ -644,7 +648,7 @@ Title: It's A Trap!
 # $$$$$$#.#$$$$$$ #
 #        @        #
 ###################
-Title: Pattern
+Level 36
 
 ##############
 #            #
@@ -661,7 +665,7 @@ Title: Pattern
  # * * * * * #
  #           #
  #############
-Title: An acute attack of claustrophobia
+Level 37
 
 #######################
 #          @          #
@@ -680,7 +684,7 @@ Title: An acute attack of claustrophobia
        #...#...#
        #...#...#
        #########
-Title: A Bit Harder Than Albe 4
+Level 38
 
 #########
 #   *   #
@@ -707,7 +711,7 @@ Title: A Bit Harder Than Albe 4
   #   #
   #   #
   #   #
-Title: Light-emitting diode
+Level 39
 
  #####   #####
 ##...## ##...##
@@ -726,7 +730,7 @@ Title: Light-emitting diode
  #.$$.###.$$.#
  ##..## ##..##
   ####   ####
-Title: A Bit Harder Than Albe 10
+Level 40
 
     #####
     #   #
@@ -741,7 +745,7 @@ Title: A Bit Harder Than Albe 10
    ## . #
     #   #
     #####
-Title: A Bit Harder Than Albe 26
+Level 41
 
      #####
     ##   #
@@ -758,7 +762,7 @@ Title: A Bit Harder Than Albe 26
     ## .  #
      #   ##
      #####
-Title: A Bit Harder Than Albe 27
+Level 42
 
 #####         #####
 #   ##       ##   #
@@ -776,7 +780,7 @@ Title: A Bit Harder Than Albe 27
    #. #$$ $$# .#
    ####.   .####
       #######
-Title: A Bit Harder Than Albe 29
+Level 43
 
       #####
       #   #
@@ -795,7 +799,7 @@ Title: A Bit Harder Than Albe 29
       #$.$#
       # @ #
       #####
-Title: A Bit Harder Than Albe 33
+Level 44
 
       #####
     ###   ##
@@ -814,7 +818,7 @@ Title: A Bit Harder Than Albe 33
   ####  $   #
      ##   ###
       #####
-Title: A Bit Harder Than Albe 34
+Level 45
 
    ###    #######
 ####.######   ..#
@@ -829,7 +833,7 @@ Title: A Bit Harder Than Albe 34
     #  $@$  #
     ##  #  ##
      #######
-Title: A Bit Harder Than Albe 39
+Level 46
 
      #######
   ####...  #
@@ -845,7 +849,7 @@ Title: A Bit Harder Than Albe 39
 # $     $      #
 #############  #
             ####
-Title: A Bit Harder Than Oops!
+Level 47
 
          ########
  ####    #      #
@@ -863,8 +867,7 @@ Title: A Bit Harder Than Oops!
  #          $$$ #
  #  #####  #$ $ #
  ####   ####    #
-           ######
-Title: A Bit Harder Than The Maze
+Level 48
 
 #########  #########
 #...$   ####   $...#
@@ -886,7 +889,7 @@ Title: A Bit Harder Than The Maze
 #..$ $  ....  $ $..#
 #...$   ####   $...#
 #########  #########
-Title: A Bit Harder Than Red Cross
+Level 49
 
          ####    #####
  ####    #  ######   #
@@ -904,7 +907,7 @@ Title: A Bit Harder Than Red Cross
    ##### #  $  #$ # $    ##
          #  ####  ##  ####
          ####  ########
-Title: A Bit Harder Than Revenge 264
+Level 50
 
       ##############
       #            #
@@ -920,7 +923,7 @@ Title: A Bit Harder Than Revenge 264
    #### $ ##$$## $ ####
       #            #
       ##############
-Title: A Bit Harder Than Warehouse 58
+Level 51
 
     ######
    ##....##
@@ -936,7 +939,7 @@ Title: A Bit Harder Than Warehouse 58
   ##.    .##
    ##....##
     ######
-Title: A Bit Harder Than Warehouse 82
+Level 52
 
 ###################
 #                 #
@@ -955,7 +958,7 @@ Title: A Bit Harder Than Warehouse 82
 # $####...######$ #
 #                 #
 ###################
-Title: A Bit Harder Than Learning Sokoban 7
+Level 53
 
 #####################
 #####################
@@ -974,7 +977,7 @@ Title: A Bit Harder Than Learning Sokoban 7
 #####################
 #####################
 #####################
-Title: A Bit Harder Than Learning Sokoban 8
+Level 54
 
 ###################
 ##     .....     ##
@@ -993,7 +996,7 @@ Title: A Bit Harder Than Learning Sokoban 8
 ## ####     #### ##
 ##     .....     ##
 ###################
-Title: A Bit Harder Than Learning Sokoban 14
+Level 55
 
 #######################
 #######################
@@ -1016,7 +1019,7 @@ Title: A Bit Harder Than Learning Sokoban 14
 #######################
 #######################
 #######################
-Title: A Bit Harder Than Learning Sokoban 20
+Level 56
 
 ###########
 #. . . . .#
@@ -1029,7 +1032,7 @@ Title: A Bit Harder Than Learning Sokoban 20
 # $$ # $$ #
 #. . . . .#
 ###########
-Title: A Bit Harder Than Learning Sokoban 33
+Level 57
 
 ###################
 ##               ##
@@ -1050,7 +1053,7 @@ Title: A Bit Harder Than Learning Sokoban 33
 #  $$$$$.*.$$$$$  #
 ##               ##
  #################
-Title: Totem
+Level 58
 
                  #
                  #
@@ -1095,7 +1098,7 @@ Title: Totem
                ## ##
                 ###
                  #
-Title: Toy for christmas tree
+Level 59
 
 ####  ####  ####  ####  ####  ####  ####  ####
 #  #  #  #  #  #  #  #  #  #  #  #  #  #  # @#
@@ -1128,7 +1131,7 @@ Title: Toy for christmas tree
 # $####$ #  # $####$ #  # $####$ #  # $####$ #
 #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #
 ####  ####  ####  ####  ####  ####  ####  ####
-Title: Cohomology
+Level 60
 
     ###########################
     #          *   *          #
@@ -1152,7 +1155,7 @@ Title: Cohomology
     # ******** * # * ******** #
     #          * @ *          #
     ###########################
-Title: ++
+Level 61
 
 #########################
 #           #           #
@@ -1177,7 +1180,7 @@ Title: ++
 # *********   ......... #
 #           #           #
 #########################
-Title: Inner squers
+Level 62
 
 ############################
 #  .  .     .  .  ##########
@@ -1206,7 +1209,7 @@ Title: Inner squers
 #   .  .   .  .   #$ $ $ $ #
 #  .  .     .  .  #        #
 ############################
-Title: Basketball
+Level 63
 
 #################################
 #               #               #
@@ -1239,7 +1242,7 @@ Title: Basketball
 # *************   ************* #
 #               #               #
 #################################
-Title: Inner squers+++
+Level 64
 
 ##################
 #                #
@@ -1250,7 +1253,7 @@ Title: Inner squers+++
 # #$#   *#*     .#
 #                #
 ##################
-Title: 2+2=4
+Level 65
 
 ####
 #  ###############
@@ -1269,7 +1272,7 @@ Title: 2+2=4
 # *$***********.##
 #  #            #
 #################
-Title: Level 90733
+Level 66
 
            ###
  ###       #.#       ###
@@ -1296,7 +1299,7 @@ Title: Level 90733
  #*####    #.#    ####*#
  ###       #.#       ###
            ###
-Title: Mr. Spider
+Level 67
 
 ############################
 #             #            #
@@ -1315,7 +1318,7 @@ Title: Mr. Spider
 #######  ###################
       #  #
       ####
-Title: Teleport me again
+Level 68
 
     ####
     #  ###
@@ -1331,7 +1334,7 @@ Title: Teleport me again
       #  * *     #
        #     #   #
         ##########
-Title: Microban 3 - 20 - c
+Level 69
 
 ##########   ##########
 # . . .  #####  #  #  #
@@ -1352,7 +1355,7 @@ Title: Microban 3 - 20 - c
 #.   $#.     # $ $ $  #
 #  #  #  #####  . . . #
 ##########   ##########
-Title: 2,982 Moves Only
+Level 70
 
 ################
 #..         ##.#
@@ -1370,7 +1373,7 @@ Title: 2,982 Moves Only
 #....$$$$$$$$.##
 #.##         ..#
 ################
-Title: Whirlpool
+Level 71
 
 #########################
 #   #################   #
@@ -1397,7 +1400,7 @@ Title: Whirlpool
 #                       #
 #   #################   #
 #########################
-Title: 5 walls trap
+Level 72
 
 ###################
 #@                #
@@ -1418,7 +1421,7 @@ Title: 5 walls trap
 #  * * * * * * *  #
 #                 #
 ###################
-Title: Mortal Combat I
+Level 73
 
 ###############
 ###         ###
@@ -1439,7 +1442,7 @@ Title: Mortal Combat I
     # #$# #
     #     #
     #######
-Title: Electric bulb
+Level 74
 
   #########               #########
  ##       ##             ##       ##
@@ -1456,7 +1459,7 @@ Title: Electric bulb
 ##   * * * ##           ## * * *   ##
  ##       ##             ##       ##
   #########               #########
-Title: Double electric bulb
+Level 75
 
 ###################
 #        #        #
@@ -1471,7 +1474,7 @@ Title: Double electric bulb
 #    $$$ # ...    #
 #     @  #  #     #
 ###################
-Title: Mirror
+Level 76
 
 ###################
 #  ##    *  ####  #
@@ -1486,7 +1489,7 @@ Title: Mirror
 #  @    *$*       #
 #  ###   *   ###  #
 ###################
-Title: Rhombic
+Level 77
 
 ################
 #  #############
@@ -1498,7 +1501,7 @@ Title: Rhombic
 ## *** *** *** #
 ##  *          #
 ################
-Title: $99
+Level 78
 
 #############################
 #             @             #
@@ -1529,7 +1532,7 @@ Title: $99
 # $ $ $ $ $ $ $ $ $ $ $ $ $ #
 #                           #
 #############################
-Title: Spider 2
+Level 79
 
  ####################
  #                  ####
@@ -1547,7 +1550,7 @@ Title: Spider 2
 # $* *   *****#****** #
 #    #                #
 #######################
-Title: Santanero++
+Level 80
 
           ###
          #   #
@@ -1574,7 +1577,7 @@ Title: Santanero++
 #........* . *........#
 #  #################  #
 #####             #####
-Title: A Bit Harder Than SBM 2
+Level 81
 
  #################
 ##        ****   #
@@ -1588,7 +1591,7 @@ Title: A Bit Harder Than SBM 2
 #   ************..#
 ###               #
   #################
-Title: A Bit Harder Than SBM - AD 30
+Level 82
 
 ####################
 #        #     ... #
@@ -1603,7 +1606,7 @@ Title: A Bit Harder Than SBM - AD 30
 # $$$$## #  #  ... #
 #        #         #
 ####################
-Title: Maxwell's demon
+Level 83
 
 #################
 #       #       #
@@ -1614,7 +1617,7 @@ Title: Maxwell's demon
 # *$*$*   *.*.* #
 #       #       #
 #################
-Title: Overturn 1
+Level 84
 
 #################
 #@      #       #
@@ -1633,7 +1636,7 @@ Title: Overturn 1
 # *.*.* # *$*$* #
 #       #       #
 #################
-Title: Overturn 2
+Level 85
 
 #########################
 #       #       #       #
@@ -1660,7 +1663,7 @@ Title: Overturn 2
 # *$*$*   *$*$* # *$*$* #
 #       #               #
 #########################
-Title: Overturn 3
+Level 86
 
 ###########
 #@$  .....##
@@ -1672,7 +1675,7 @@ Title: Overturn 3
 #  $$ # $  #
 #     #    #
 ############
-Title: A Bit Harder Than Hand-Made 008
+Level 87
 
       ###
     ### ###
@@ -1688,7 +1691,7 @@ Title: A Bit Harder Than Hand-Made 008
 #       $$  $ #
 ###   ###   ###
   ##### #####
-Title: A Bit Harder Than Still more 19
+Level 88
 
   ########
   #      #   ######
@@ -1699,7 +1702,7 @@ Title: A Bit Harder Than Still more 19
 # #  $ #  ####  ..##
 #    ###     ######
 ######
-Title: A Bit Harder Than Boxxle 01-14
+Level 89
 
   ####
   #  ###
@@ -1717,7 +1720,7 @@ Title: A Bit Harder Than Boxxle 01-14
    ############ ##$####
               #    #
               ######
-Title: A Bit Harder Than Perfect 291
+Level 90
 
  ####
 ##  ###############
@@ -1728,7 +1731,7 @@ Title: A Bit Harder Than Perfect 291
 # $##################
 #  #
 ####
-Title: Divine simplification
+Level 91
 
             #####
             #   #
@@ -1746,7 +1749,7 @@ Title: Divine simplification
 ###    #  #  #
   #    #  ####
   ######
-Title: A Bit Harder Than SokoMind 22
+Level 92
 
        #####
     ####   ##
@@ -1762,7 +1765,7 @@ Title: A Bit Harder Than SokoMind 22
  #  $$...### #
  ##    #     #
   ############
-Title: A Bit Harder Than Fake doors
+Level 93
 
        #######
        #  #  #
@@ -1780,7 +1783,7 @@ Title: A Bit Harder Than Fake doors
 #         +          #
 ##################   #
                  #####
-Title: A Bit Harder Than Tertius gradus ad Olympo 26
+Level 94
 
     #####       #####
 ##### . #       # . #####
@@ -1800,7 +1803,7 @@ Title: A Bit Harder Than Tertius gradus ad Olympo 26
    ###################
         #########
          #######
-Title: Not scary spider
+Level 95
 
         ####
         #  #
@@ -1822,7 +1825,7 @@ Title: Not scary spider
          #  #
          #  #
          ####
-Title: A Bit Harder Than Tertius gradus ad Olympo 17
+Level 96
 
 ###################
 #        @        #
@@ -1841,7 +1844,7 @@ Title: A Bit Harder Than Tertius gradus ad Olympo 17
 #  * ######### *  #
 #                 #
 ###################
-Title: A Bit Harder Than SokoCreation 45
+Level 97
 
 ###################
 ##               ##
@@ -1860,7 +1863,7 @@ Title: A Bit Harder Than SokoCreation 45
  ##  $ $.$.$ $  ##
 ##               ##
 ###################
-Title: A Bit Harder Than Bagatelle 1-5
+Level 98
 
 #####################################################
 #                                                   #
@@ -1919,5 +1922,6 @@ Title: A Bit Harder Than Bagatelle 1-5
 # $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ #
 #                                                   #
 #####################################################
-Title: Doomsday Clock
+Level 99
 
+`

@@ -1,9 +1,54 @@
 let canvas = document.getElementById('myCanvas');
+
+function parseLevels(data) {
+  const lines = data.split('\n');
+  const levels = {};
+  let currentMap = [];
+  let currentLevel = null;
+
+  for (let line of lines) {
+    line = line.replace(/\r$/, '');
+
+    const match = line.match(/^Level\s+(\d+)/);
+    if (match) {
+      if (currentLevel !== null) {
+        levels[currentLevel] = normalizeMap(currentMap);
+      }
+      currentLevel = Number(match[1]);
+      currentMap = [];
+    } else if (line.trim() !== '') {
+      currentMap.push(line);
+    }
+  }
+
+  if (currentLevel !== null) {
+    levels[currentLevel] = normalizeMap(currentMap);
+  }
+
+  return levels;
+}
+function normalizeMap(map) {
+  let maxCols = 0;
+    for (let i = 0; i < map.length; i++) {
+        let row_number = map[i].length;  // Lấy độ dài của dòng hiện tại
+        if (row_number > maxCols) {
+            maxCols = row_number;
+        }
+    }
+  return map.map(row => row.padEnd(maxCols, ' '));
+}
+
+const maps = parseLevels(rawData);
+
+let map = maps[parseInt(Math.random() * Object.keys(maps).length)].map(row => row.split(''));
+console.log(map);
+
 // resize canvas theo map
 canvas.width  = map[0].length * size;
 canvas.height = map.length * size;
 
 let anim1 = new Player(canvas,'Images/character.png',4,4);
+let anim_on_target = new Player(canvas,'Images/character_target.png',1,1);
 let box = new Box(canvas,'Images/box.png');
 let box_on_target = new Box(canvas,'Images/box_target.png');
 let wall = new Wall(canvas,'Images/wall.png');
@@ -13,10 +58,11 @@ let floor = new Floor(canvas,'Images/floor.png');
 let playerRow = 0;
 let playerCol = 0;
 
+
 // tìm player trong map
 for (let r = 0; r < map.length; r++) {
     for (let c = 0; c < map[r].length; c++) {
-        if (map[r][c] === 'P') {
+        if (map[r][c] === '@' || map[r][c] === '+') {
             playerRow = r;
             playerCol = c;
         }
@@ -32,16 +78,22 @@ function drawGame() {
             let x = c * size;
             let y = r * size;
             // vẽ nền
-            floor.drawFloor(x, y);        
+            if (map[r][c] !== '#') {
+                floor.drawFloor(x, y);
+            }
             // vẽ object
-            if (map[r][c] === 'P'|| map[r][c] === 'Q') {
+            if (map[r][c] === '@') {
                 anim1.setPostion(x, y);
                 anim1.drawPlayer();
+            }            
+            if (map[r][c] === '+') {
+                anim_on_target.setPostion(x, y);
+                anim_on_target.drawPlayer();
             }
             if (map[r][c] === '#') wall.drawWall(x, y);
-            if (map[r][c] === 'B') box.drawBox(x, y);
-            if (map[r][c] === 'X') box_on_target.drawBox(x, y);
-            if (map[r][c] === 'T') target.drawTarget(x, y);
+            if (map[r][c] === '$') box.drawBox(x, y);
+            if (map[r][c] === '*') box_on_target.drawBox(x, y);
+            if (map[r][c] === '.') target.drawTarget(x, y);
         }
     }
 }
@@ -77,6 +129,24 @@ document.addEventListener('keydown', e => {
 
     if (next_row === 0 && next_col === 0) return;
 
+    // Tạo bản sao map
+    let mapCopy = [];
+    for (let i = 0; i < map.length; i++) {
+        let rowCopy = [];
+        for (let j = 0; j < map[i].length; j++) {
+            rowCopy.push(map[i][j]);
+        }
+        mapCopy.push(rowCopy);
+    }
+
+    // Lưu trạng thái vào lastMove
+    lastMove = {
+        map: mapCopy,
+        playerRow: playerRow,
+        playerCol: playerCol
+    };
+
+
     let newRow = playerRow + next_row;
     let newCol = playerCol + next_col;
     let curCell = map[playerRow][playerCol];
@@ -86,35 +156,35 @@ document.addEventListener('keydown', e => {
     if (nextCell === '#') return;
 
     // gặp box
-    if (nextCell === 'B'|| nextCell === 'X') {
+    if (nextCell === '$'|| nextCell === '*') {
         let box_nextRow = newRow + next_row;
         let box_nextCol = newCol + next_col;
         let boxNext = map[box_nextRow][box_nextCol];
 
         // box không đẩy được
-        if (boxNext === '#' || boxNext === 'B'|| boxNext === 'X') {
+        if (boxNext === '#' || boxNext === '$'|| boxNext === '*') {
             return;
         }
 
         // đẩy box
-        if( boxNext === 'T') {
-            map[box_nextRow][box_nextCol] = 'X'; // box lên target
+        if( boxNext === '.') {
+            map[box_nextRow][box_nextCol] = '*'; // box lên target
             console.log('Đẩy box lên target');
         } else {
-            map[box_nextRow][box_nextCol] = 'B'; // box lên ô trống
+            map[box_nextRow][box_nextCol] = '$'; // box lên ô trống
         }
         // cập nhật vị trí player
         // box đang ở target
-        if (nextCell === 'X') {
-            map[newRow][newCol] = 'Q'; // player ở trên target
+        if (nextCell === '*') {
+            map[newRow][newCol] = '+'; // player ở trên target
             console.log('Player ở trên target');
         } else {
-            map[newRow][newCol] = 'P';
+            map[newRow][newCol] = '@';
         }
 
         // gặp target sau khi đẩy box
-        if( curCell === 'Q') {
-            map[playerRow][playerCol] = 'T'; // player ra khỏi target
+        if( curCell === '+') {
+            map[playerRow][playerCol] = '.'; // player ra khỏi target
             console.log('Player ra khỏi target');
         } else {
             map[playerRow][playerCol] = ' ';
@@ -122,15 +192,15 @@ document.addEventListener('keydown', e => {
     } 
     else {
         //gặp target
-        if( nextCell === 'T') {
-            map[newRow][newCol] = 'Q'; // player lên target
+        if( nextCell === '.') {
+            map[newRow][newCol] = '+'; // player lên target
             console.log('Player lên target');
         } else {
-            map[newRow][newCol] = 'P';
+            map[newRow][newCol] = '@';
         }
         // rời khỏi target
-        if( curCell === 'Q') {
-            map[playerRow][playerCol] = 'T'; // player ra khỏi target
+        if( curCell === '+') {
+            map[playerRow][playerCol] = '.'; // player ra khỏi target
             console.log('Player ra khỏi target');
         } else {
             map[playerRow][playerCol] = ' ';
@@ -149,8 +219,36 @@ document.addEventListener('keydown', e => {
 function checkWin() {
     for (let r = 0; r < map.length; r++) {
         for (let c = 0; c < map[r].length; c++) {
-            if (map[r][c] === 'T'|| map[r][c] === 'Q') return;
+            if (map[r][c] === '.'|| map[r][c] === '+') return;
         }
     }
     alert('🎉 YOU WIN!');
 }
+
+function undoMove() {
+    if (!lastMove) {
+        console.log("Không có bước nào để undo!");
+        return;
+    }
+
+    // Phục hồi map và vị trí player
+    let mapCopy = [];
+    for (let i = 0; i < lastMove.map.length; i++) {
+        let rowCopy = [];
+        for (let j = 0; j < lastMove.map[i].length; j++) {
+            rowCopy.push(lastMove.map[i][j]);
+        }
+        mapCopy.push(rowCopy);
+    }
+
+    map = mapCopy;
+    playerRow = lastMove.playerRow;
+    playerCol = lastMove.playerCol;
+
+    // Xóa lastMove để chỉ undo được 1 bước
+    lastMove = null;
+
+    // Vẽ lại game
+    drawGame();
+}
+
