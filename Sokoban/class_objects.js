@@ -43,8 +43,8 @@ class Player{
     setDirection(direction) {
         switch(direction){
         case 'down': this.indexRow = 0; break;
-        case 'left': this.indexRow = 2; break;
-        case 'right': this.indexRow = 1; break;
+        case 'left': this.indexRow = 1; break;
+        case 'right': this.indexRow = 2; break;
         case 'up': this.indexRow = 3; break;
         }
     }

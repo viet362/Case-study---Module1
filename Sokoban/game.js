@@ -46,21 +46,25 @@ let map = originalMap.map(row => [...row]);
 console.log(map);
 resizeMap();
 
+let gameOver = false;
+
 function resetMap(){
     map = originalMap.map(row => [...row]);
     document.getElementById("level-info").innerText = "Level " + index_level;
     document.getElementById("result").innerHTML = "Hint: Set all box on the coin to win!";
     resizeMap();
+    gameOver = false;
 }
 
 function nextMap(){
     index_level++;
-    if(index_level > Object.keys(maps).length){index_level=0}
+    if(index_level > Object.keys(maps).length - 1){index_level=0}
     originalMap = maps[index_level].map(row => row.split(''));
     map = originalMap.map(row => [...row]);
     document.getElementById("level-info").innerText = "Level " + index_level;
     document.getElementById("result").innerHTML = "Hint: Set all box on the coin to win!";
     resizeMap();
+    gameOver = false;
 }
 
 function selectMap(){
@@ -74,6 +78,7 @@ function selectMap(){
     document.getElementById("level-info").innerText = "Level " + index_level;
     document.getElementById("result").innerHTML = "Hint: Set all box on the coin to win!";
     resizeMap();
+    gameOver = false;
 }
 
 function randomMap(){
@@ -83,6 +88,7 @@ function randomMap(){
     document.getElementById("level-info").innerText = "Level " + index_level;
     document.getElementById("result").innerHTML = "Hint: Set all box on the coin to win!";
     resizeMap();
+    gameOver = false;
 }
 
 
@@ -152,23 +158,24 @@ function gameLoop() {
 gameLoop();
 
 function handleMove(key) {
+    if(gameOver) return;
     findPlayer();
     let next_row = 0; 
     let next_col = 0;
 
-    if (key === 'ArrowUp') {
+    if (key === 'ArrowUp' || key === "w") {
         next_row = -1;
         anim1.setDirection('up');
     }
-    if (key === 'ArrowDown') {
+    if (key === 'ArrowDown'|| key === "s") {
         next_row = 1;
         anim1.setDirection('down');
     }
-    if (key === 'ArrowLeft') {
+    if (key === 'ArrowLeft'|| key === "a") {
         next_col = -1;
         anim1.setDirection('left');
     }
-    if (key === 'ArrowRight') {
+    if (key === 'ArrowRight' || key === "d") {
         next_col = 1;
         anim1.setDirection('right');
     }
@@ -263,13 +270,34 @@ function handleMove(key) {
 };
 // keyboard
 document.addEventListener('keydown', e => {
-    handleMove(e.key);
+    if(["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].includes(e.key)){
+        e.preventDefault();
+        handleMove(e.key);
+    }
 });
 //button
 document.getElementById('up-btn').onclick    = () => handleMove('ArrowUp');
 document.getElementById('down-btn').onclick  = () => handleMove('ArrowDown');
 document.getElementById('left-btn').onclick  = () => handleMove('ArrowLeft');
 document.getElementById('right-btn').onclick = () => handleMove('ArrowRight');
+//touch
+canvas.addEventListener('click', e => {
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    const px = playerCol * size + size / 2;
+    const py = playerRow * size + size / 2;
+
+    const dx = x - px;
+    const dy = y - py;
+
+    if (Math.abs(dx) > Math.abs(dy)) {
+        dx > 0 ? handleMove('ArrowRight') : handleMove('ArrowLeft');
+    } else {
+        dy > 0 ? handleMove('ArrowDown') : handleMove('ArrowUp');
+    }
+});
 
 function checkWin() {
     for (let r = 0; r < map.length; r++) {
@@ -278,6 +306,10 @@ function checkWin() {
         }
     }
     document.getElementById("result").innerHTML='Congration 🎉 YOU WIN!';
+    gameOver = true;
+    setTimeout(()=>{
+        nextMap();
+    }, 1000);
 }
 
 function undoMove() {
